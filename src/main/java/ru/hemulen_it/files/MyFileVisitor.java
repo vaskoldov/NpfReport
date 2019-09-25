@@ -12,7 +12,7 @@ import ru.hemulen_it.xml.MessageParser;
 
 public class MyFileVisitor extends SimpleFileVisitor {
     @Override
-    public FileVisitResult visitFile(Object file, BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult visitFile(Object file, BasicFileAttributes attrs) {
         if (file.toString().endsWith(".gz")) {
             // Если текущий файл - архив, то распаковываем его...
             Ripper ripper = new Ripper();
@@ -24,20 +24,6 @@ public class MyFileVisitor extends SimpleFileVisitor {
             if (si != null){
                 si.fileName = arcFile.getName();
                 si.filePath = arcFile.getParent();
-
-                System.out.println(si.fileName);
-                System.out.println(si.filePath);
-                System.out.println(si.GUID);
-                System.out.println(si.replyTo);
-                System.out.println(si.timeStamp);
-                System.out.println(si.compiler);
-                System.out.println(si.source);
-                System.out.println(si.transferMethod);
-                System.out.println(si.extNumber);
-                System.out.println(si.fillDate);
-                System.out.println(si.reportDate);
-                System.out.println(si.documentNumber);
-                System.out.println(si.period);
             }
             // ...записываем в глобальный список
 

@@ -1,21 +1,13 @@
 package ru.hemulen_it;
 
 import ru.hemulen_it.files.MyFileVisitor;
-import ru.hemulen_it.model.ServiceInformation;
-import ru.hemulen_it.model.ServiceInformationList;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Properties;
 
 public class Main {
-    public static ServiceInformationList report = new ServiceInformationList();
     public static void main(String[] args) {
         /*
         Properties props = new Properties();

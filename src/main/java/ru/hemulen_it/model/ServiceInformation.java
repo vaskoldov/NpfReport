@@ -11,13 +11,9 @@ public class ServiceInformation {
     // Атрибуты сообщения
     public String GUID;
     public String replyTo;
-    public String timeStamp;
-    public String compiler;
-    public String source;
-    public String transferMethod;
-    public String extNumber;
-    public String fillDate;
-    public String reportDate;
-    public String documentNumber;
-    public String period;
+    public String timestamp;
+
+    public String toString() {
+        return "GUID: " + GUID + ", timestamp: " + timestamp + ", replyTo: " + replyTo;
+    }
 }
