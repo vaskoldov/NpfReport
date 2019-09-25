@@ -3,6 +3,7 @@ package ru.hemulen_it.xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import ru.hemulen_it.model.ServiceInformation;
 
@@ -29,6 +30,7 @@ public class MessageParser {
             return null;
         }
     }
+
     private ServiceInformation extractServiceInformation(Document doc) {
         ServiceInformation si = new ServiceInformation();
         Element root = doc.getDocumentElement();
@@ -37,26 +39,27 @@ public class MessageParser {
             // В сообщении нет блока служебной информации
             return null;
         }
-        if (serviceInfoElement.getElementsByTagName("ВОтветНа").getLength() == 0) {
-            // Сообщение является запросом
-            si.requestQUID = serviceInfoElement.getElementsByTagName("GUID").item(0).getTextContent();
-            si.requestTimeStamp = serviceInfoElement.getElementsByTagName("ДатаВремя").item(0).getTextContent();
-            si.requestCompiler = serviceInfoElement.getElementsByTagName("Наименование").item(0).getTextContent();
-            si.requestSource = serviceInfoElement.getElementsByTagName("ИсточникДанных").item(0).getTextContent();
-            si.requestTransferMethod = serviceInfoElement.getElementsByTagName("СпособПередачи").item(0).getTextContent();
-            si.requestExtNumber = serviceInfoElement.getElementsByTagName("НомерВнешний").item(0).getTextContent();
-            si.requestFillDate = serviceInfoElement.getElementsByTagName("ДатаЗаполнения").item(0).getTextContent();
-            si.requestReportDate = serviceInfoElement.getElementsByTagName("ДатаПодачи").item(0).getTextContent();
-        } else {
-            // Сообщение является ответом
-            si.responseGUID = serviceInfoElement.getElementsByTagName("GUID").item(0).getTextContent();
-            si.responseReplyTo = serviceInfoElement.getElementsByTagName("ВОтветНа").item(0).getTextContent();
-            si.requestQUID = si.responseReplyTo;
-            si.responseTimeStamp = serviceInfoElement.getElementsByTagName("ДатаВремя").item(0).getTextContent();
-            si.responseCompiler = serviceInfoElement.getElementsByTagName("Наименование").item(0).getTextContent();
-            si.responseDocumentNumber = serviceInfoElement.getElementsByTagName("НомерДокументаОрганизации").item(0).getTextContent();
-            si.responsePeriod = serviceInfoElement.getElementsByTagName("ЗаГод").item(0).getTextContent();
-        }
+        si.GUID = getTextContent(root, "GUID");
+        si.timeStamp = getTextContent(serviceInfoElement, "ДатаВремя");
+        si.compiler = getTextContent(serviceInfoElement, "Наименование");
+        si.source = getTextContent(serviceInfoElement, "ИсточникДанных");
+        si.transferMethod = getTextContent(serviceInfoElement,"СпособПередачи");
+        si.extNumber = getTextContent(serviceInfoElement,"НомерВнешний");
+        si.fillDate = getTextContent(serviceInfoElement,"ДатаЗаполнения");
+        si.reportDate = getTextContent(serviceInfoElement,"ДатаПодачи");
+        si.replyTo = getTextContent(serviceInfoElement,"ВОтветНа");
+        si.documentNumber = getTextContent(serviceInfoElement,"НомерДокументаОрганизации");
+        si.period = getTextContent(serviceInfoElement,"ЗаГод");
         return si;
     }
+
+    private String getTextContent(Element root, String nodeName) {
+        NodeList nodeList = root.getElementsByTagName(nodeName);
+        if (nodeList.getLength() != 0) {
+            return nodeList.item(0).getTextContent();
+        } else {
+            return "";
+        }
+    }
+
 }
