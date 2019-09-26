@@ -20,7 +20,8 @@ public class Main {
          */
         MyFileVisitor myFileVisitor = new MyFileVisitor();
         //Path directoryPath = Paths.get(props.getProperty("DOC_DIR"));
-        Path directoryPath = Paths.get("D:\\\\Temp\\\\base-storage\\\\770I01");
+        Path directoryPath = Paths.get("C:\\Temp\\base-storage\\770I01");
+
         try {
             Files.walkFileTree(directoryPath, myFileVisitor);
         } catch (IOException e) {

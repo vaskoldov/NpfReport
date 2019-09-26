@@ -23,10 +23,12 @@ public class MyFileVisitor extends SimpleFileVisitor {
             ServiceInformation si = parser.parseMessage(xml);
             if (si != null){
                 si.fileName = arcFile.getName();
-                si.filePath = arcFile.getParent();
+                si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf("\\")+1);
+                // ...записываем в глобальный список
+                ResultWriter.writeResult(si);
+            } else {
+                ResultWriter.writeError(arcFile);
             }
-            // ...записываем в глобальный список
-
         }
         return FileVisitResult.CONTINUE;
     }

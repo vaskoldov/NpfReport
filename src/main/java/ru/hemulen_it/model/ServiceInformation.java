@@ -14,6 +14,12 @@ public class ServiceInformation {
     public String timestamp;
 
     public String toString() {
-        return "GUID: " + GUID + ", timestamp: " + timestamp + ", replyTo: " + replyTo;
+        String result = replyTo + ";";
+        result += filePath + ";";
+        result += fileName + ";";
+        result += GUID + ";";
+        result += timestamp + ";";
+        result += "\n";
+        return result;
     }
 }

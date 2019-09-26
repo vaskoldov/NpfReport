@@ -7,10 +7,7 @@ import ru.hemulen_it.model.ServiceInformation;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class MessageParser {
     // Константа для поиска атрибутов xmlns
@@ -23,7 +20,7 @@ public class MessageParser {
      */
     public ServiceInformation parseMessage(ByteArrayOutputStream xml) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        //factory.setNamespaceAware(true);
+        factory.setNamespaceAware(true);
         DocumentBuilder builder;
         InputStream inputStream = new ByteArrayInputStream(xml.toByteArray());
         Document doc;
@@ -46,7 +43,7 @@ public class MessageParser {
             // В сообщении нет блока служебной информации
             return null;
         }
-        si.GUID = getTextContent(root, serviceNS, "GUID");
+        si.GUID = getTextContent(serviceInfoElement, serviceNS, "GUID");
         si.timestamp = getTextContent(serviceInfoElement, serviceNS, "ДатаВремя");
         si.replyTo = getTextContent(serviceInfoElement, serviceNS,"ВОтветНа");
         return si;
