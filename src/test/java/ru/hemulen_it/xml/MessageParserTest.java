@@ -18,10 +18,9 @@ class MessageParserTest {
     @Test
     public static void main(String[] args) {
         MessageParser messageParser = new MessageParser();
-        File xmlFile = new File("C:\\Temp\\ПФР_027007_7726260499_ДНПФД_20190919_c1b4ccae-dae8-11e9-8bda-005056897fe0.xml");
         byte[] xml = null;
         try {
-            xml = Files.readAllBytes(Paths.get("C:\\Temp\\ПФР_027007_7726260499_ДНПФД_20190919_c1b4ccae-dae8-11e9-8bda-005056897fe0.xml"));
+            xml = Files.readAllBytes(Paths.get("C:\\Temp\\Ошибки парсинга\\ПФР_УППО_20190920_22b673c6-dba5-11e9-9571-00155d0a1e12.XML"));
         } catch (IOException e) {
             e.printStackTrace();
         }

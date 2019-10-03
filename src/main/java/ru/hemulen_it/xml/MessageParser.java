@@ -25,11 +25,17 @@ public class MessageParser {
         InputStream inputStream = new ByteArrayInputStream(xml.toByteArray());
         Document doc;
         try {
+            xml.close();
             builder = factory.newDocumentBuilder();
             doc = builder.parse(inputStream);
+            inputStream.close();
             return extractServiceInformation(doc);
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException e) {
             e.printStackTrace();
+            return null;
+        } catch (SAXException e) {
+            e.getMessage();
+            System.out.println("Кривой документ. Обработка продолжается.");
             return null;
         }
     }
@@ -38,14 +44,9 @@ public class MessageParser {
         ServiceInformation si = new ServiceInformation();
         Element root = doc.getDocumentElement();
         String serviceNS = getServiceNamespace(root, "пф.рф/АФ");
-        Element serviceInfoElement = (Element) root.getElementsByTagName("СлужебнаяИнформация").item(0);
-        if (serviceInfoElement == null) {
-            // В сообщении нет блока служебной информации
-            return null;
-        }
-        si.GUID = getTextContent(serviceInfoElement, serviceNS, "GUID");
-        si.timestamp = getTextContent(serviceInfoElement, serviceNS, "ДатаВремя");
-        si.replyTo = getTextContent(serviceInfoElement, serviceNS,"ВОтветНа");
+        si.GUID = getTextContent(root, serviceNS, "GUID");
+        si.timestamp = getTextContent(root, serviceNS, "ДатаВремя");
+        si.replyTo = getTextContent(root, serviceNS,"ВОтветНа");
         return si;
     }
 
@@ -59,6 +60,7 @@ public class MessageParser {
     }
 
     private String getServiceNamespace(Element element, String needle) {
+        String rootNamespaceURI = element.getNamespaceURI();
         NamedNodeMap atts = element.getAttributes();
         for (int i = 0; i < atts.getLength(); i++) {
             Node node = atts.item(i);
@@ -66,6 +68,34 @@ public class MessageParser {
             String namespaceURI = node.getNodeValue();
             if (namespaceURI.contains(needle)
                     && (name != null && (XMLNAMESPACE.equals(name) || name.startsWith(XMLNAMESPACE + ":")))) {
+                // Проверяем, нет ли в элементе СлужебнаяИнформация отдельного namespace пф.рф/АФ
+                Node serviceInfo = element.getElementsByTagNameNS(rootNamespaceURI, "СлужебнаяИнформация").item(0);
+                if ((serviceInfo != null) && (serviceInfo.getNodeType() == Node.ELEMENT_NODE)) {
+                    Element serviceInfoElement = (Element) serviceInfo;
+                    String serviceNamespaceURI = getServiceNamespace(serviceInfoElement, needle);
+                    if (serviceNamespaceURI != null) {
+                        return serviceNamespaceURI;
+                    } else {
+                        // Проверяем, нет ли в дочерних элементах СлужебнаяИнформация отдельного namespace пф.рф/АФ
+                        NodeList serviceChilds = serviceInfoElement.getChildNodes();
+                        for (int c = 0; c < serviceChilds.getLength(); c++) {
+                            if ((serviceChilds.item(c) != null) && (serviceChilds.item(c).getNodeType() == Node.ELEMENT_NODE)) {
+                                Element childElement = (Element) serviceChilds.item(c);
+                                NamedNodeMap childAtts = childElement.getAttributes();
+                                for (int j = 0; j < childAtts.getLength(); j++) {
+                                    Node childNode = childAtts.item(j);
+                                    String childName = childNode.getNodeName();
+                                    String childNamespaceURI = childNode.getNodeValue();
+                                    if ((childNamespaceURI.contains(needle)) &&
+                                            (childName != null && (XMLNAMESPACE.equals(childName) || childName.startsWith(XMLNAMESPACE + ":")))
+                                    ) {
+                                        return childNamespaceURI;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 return namespaceURI;
             }
         }
