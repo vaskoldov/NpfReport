@@ -2,6 +2,7 @@ package ru.hemulen_it.files;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.SimpleFileVisitor;
@@ -22,10 +23,10 @@ public class MyFileVisitor extends SimpleFileVisitor {
     protected void visitFileController(Object file) {
         Ripper ripper = new Ripper();
         File arcFile = new File(file.toString());
-        ByteArrayOutputStream xml = ripper.UnpackToBuffer(arcFile);
+        FileOutputStream xml = ripper.UnpackToFileStream(arcFile, null);
         // ...парсим, выбирая элементы со служебной информацией
         MessageParser parser = new MessageParser();
-        ServiceInformation si = parser.parseMessage(xml);
+        ServiceInformation si = parser.parseFile(xml);
         try {
             xml.close();
         } catch (IOException e) {

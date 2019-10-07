@@ -36,7 +36,21 @@ public class MessageParser {
             return null;
         }
     }
+    /**
+     * Метод извлекает служебную информацию из переданного в параметре XML
+     * @param xml Файловый поток с XML
+     * @return Структура ServiceInformation со служебной информацией документа
+     *
+    public ServiceInformation parseFile(FileOutputStream xml) {
+        try {
+            FileDescriptor xmlFD = xml.getFD();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+
+    }
+*/
     private ServiceInformation extractServiceInformation(Document doc) {
         ServiceInformation si = new ServiceInformation();
         Element root = doc.getDocumentElement();
