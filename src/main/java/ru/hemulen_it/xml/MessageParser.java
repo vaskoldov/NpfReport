@@ -22,13 +22,10 @@ public class MessageParser {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder;
-        InputStream inputStream = new ByteArrayInputStream(xml.toByteArray());
         Document doc;
-        try {
-            xml.close();
+        try (InputStream inputStream = new ByteArrayInputStream(xml.toByteArray())) {
             builder = factory.newDocumentBuilder();
             doc = builder.parse(inputStream);
-            inputStream.close();
             return extractServiceInformation(doc);
         } catch (ParserConfigurationException | IOException e) {
             e.printStackTrace();

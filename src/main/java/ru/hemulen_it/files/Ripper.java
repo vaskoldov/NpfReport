@@ -23,7 +23,7 @@ public class Ripper {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (GZIPInputStream gzInputStream = new GZIPInputStream(new FileInputStream(archive))) {
             int length = 0;
-            while ((length=gzInputStream.read(buffer)) > 0) {
+            while ((length = gzInputStream.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, length);
             }
         } catch (FileNotFoundException e) {

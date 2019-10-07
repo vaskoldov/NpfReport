@@ -14,22 +14,30 @@ public class MyFileVisitor extends SimpleFileVisitor {
     @Override
     public FileVisitResult visitFile(Object file, BasicFileAttributes attrs) {
         if (file.toString().endsWith(".gz")) {
-            // Если текущий файл - архив, то распаковываем его...
-            Ripper ripper = new Ripper();
-            File arcFile = new File(file.toString());
-            ByteArrayOutputStream xml = ripper.UnpackToBuffer(arcFile);
-            // ...парсим, выбирая элементы со служебной информацией
-            MessageParser parser = new MessageParser();
-            ServiceInformation si = parser.parseMessage(xml);
-            if (si != null){
-                si.fileName = arcFile.getName();
-                si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf("\\")+1);
-                // ...записываем в глобальный список
-                ResultWriter.writeResult(si);
-            } else {
-                ResultWriter.writeError(arcFile);
-            }
+            visitFileController(file);
         }
         return FileVisitResult.CONTINUE;
+    }
+
+    protected void visitFileController(Object file) {
+        Ripper ripper = new Ripper();
+        File arcFile = new File(file.toString());
+        ByteArrayOutputStream xml = ripper.UnpackToBuffer(arcFile);
+        // ...парсим, выбирая элементы со служебной информацией
+        MessageParser parser = new MessageParser();
+        ServiceInformation si = parser.parseMessage(xml);
+        try {
+            xml.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (si != null) {
+            si.fileName = arcFile.getName();
+            si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf("\\") + 1);
+            // ...записываем в глобальный список
+            ResultWriter.writeResult(si);
+        } else {
+            ResultWriter.writeError(arcFile);
+        }
     }
 }
