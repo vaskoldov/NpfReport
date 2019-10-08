@@ -12,22 +12,29 @@ import java.io.*;
 public class MessageParser {
     // Константа для поиска атрибутов xmlns
     private final String XMLNAMESPACE = "xmlns";
+    private DocumentBuilderFactory factory = null;
+    private DocumentBuilder builder = null;
 
+    public MessageParser() {
+        factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Метод извлекает служебную информацию из переданного в параметре байтового потока
      * @param xml Строка XML, обернутая в байтовый поток вывода
      * @return Структура ServiceInformation со служебной информацией документа
      */
     public ServiceInformation parseMessage(ByteArrayOutputStream xml) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        DocumentBuilder builder;
         Document doc;
         try (InputStream inputStream = new ByteArrayInputStream(xml.toByteArray())) {
-            builder = factory.newDocumentBuilder();
             doc = builder.parse(inputStream);
             return extractServiceInformation(doc);
-        } catch (ParserConfigurationException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         } catch (SAXException e) {
@@ -36,21 +43,7 @@ public class MessageParser {
             return null;
         }
     }
-    /**
-     * Метод извлекает служебную информацию из переданного в параметре XML
-     * @param xml Файловый поток с XML
-     * @return Структура ServiceInformation со служебной информацией документа
-     *
-    public ServiceInformation parseFile(FileOutputStream xml) {
-        try {
-            FileDescriptor xmlFD = xml.getFD();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-
-    }
-*/
     private ServiceInformation extractServiceInformation(Document doc) {
         ServiceInformation si = new ServiceInformation();
         Element root = doc.getDocumentElement();
@@ -113,4 +106,18 @@ public class MessageParser {
         return null;
     }
 
+    public ServiceInformation parseFile(FileInputStream xmlFis) {
+        Document doc;
+        try {
+            doc = builder.parse(xmlFis);
+            return extractServiceInformation(doc);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (SAXException e) {
+            e.getMessage();
+            System.out.println("Кривой документ. Обработка продолжается.");
+            return null;
+        }
+    }
 }

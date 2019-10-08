@@ -29,6 +29,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Обработка всех вложений завершена, отчет сформирован.");
     }
 
 

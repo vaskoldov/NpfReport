@@ -1,9 +1,6 @@
 package ru.hemulen_it.files;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.FileVisitResult;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -23,12 +20,26 @@ public class MyFileVisitor extends SimpleFileVisitor {
     protected void visitFileController(Object file) {
         Ripper ripper = new Ripper();
         File arcFile = new File(file.toString());
-        FileOutputStream xml = ripper.UnpackToFileStream(arcFile, null);
+        //System.out.println(arcFile.toString());
+        //System.out.println(arcFile.length());
+        // Если нулевой архив, то пишем его название и не парсим
+        if (arcFile.length() == 0L) {
+            System.out.println(arcFile.getName() + " - нулевой длины!");
+            return;
+        }
+        // Если файл слишком большой (больше 10 Мб), то пишем его название и не парсим
+        if (arcFile.length() > 10000000L) {
+            System.out.println(arcFile.getName() + " - слишком большой для автоматической обработки!");
+            return;
+        }
+        File xmlFile = ripper.UnpackToTempFile(arcFile);
         // ...парсим, выбирая элементы со служебной информацией
         MessageParser parser = new MessageParser();
-        ServiceInformation si = parser.parseFile(xml);
+        FileInputStream xmlFis = null;
+        ServiceInformation si = null;
         try {
-            xml.close();
+            xmlFis = new FileInputStream(xmlFile);
+            si = parser.parseFile(xmlFis);
         } catch (IOException e) {
             e.printStackTrace();
         }

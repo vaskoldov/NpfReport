@@ -35,21 +35,22 @@ public class Ripper {
         return outputStream;
     }
 
-    public FileOutputStream UnpackToFileStream(File archive, File outFile) {
+    public File UnpackToTempFile(File archive) {
         byte[] buffer = new byte[BUFFER_SIZE];
         FileOutputStream fos = null;
+        File outFile = null;
         try (GZIPInputStream gzInputStream = new GZIPInputStream(new FileInputStream(archive))){
-            if (outFile == null) {
-                outFile = File.createTempFile("tmp-file", ".xml");
-            }
+            outFile = File.createTempFile("tmp-file", ".xml");
             fos = new FileOutputStream(outFile);
             int length = 0;
             while ((length = gzInputStream.read(buffer)) > 0) {
                 fos.write(buffer, 0, length);
             }
+            fos.flush();
+            fos.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return fos;
+        return outFile;
     }
 }
