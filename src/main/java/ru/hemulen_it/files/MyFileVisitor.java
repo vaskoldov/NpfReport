@@ -45,7 +45,7 @@ public class MyFileVisitor extends SimpleFileVisitor {
         }
         if (si != null) {
             si.fileName = arcFile.getName();
-            si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf("\\") + 1);
+            si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf(File.separator) + 1);
             // ...записываем в глобальный список
             ResultWriter.writeResult(si);
         } else {

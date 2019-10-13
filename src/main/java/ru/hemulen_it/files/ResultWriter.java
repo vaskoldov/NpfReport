@@ -48,7 +48,7 @@ public class ResultWriter {
     public static void writeError(File file) {
         try {
             reportFileStream.write("parsing error;");
-            reportFileStream.write(file.getParent().substring(file.getParent().lastIndexOf(File.pathSeparatorChar) + 1) + ";");
+            reportFileStream.write(file.getParent().substring(file.getParent().lastIndexOf(File.separator) + 1) + ";");
             reportFileStream.write(file.getName() + ";");
             reportFileStream.write('\n');
             reportFileStream.flush();
