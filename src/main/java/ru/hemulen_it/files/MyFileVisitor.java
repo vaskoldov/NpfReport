@@ -7,6 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 import ru.hemulen_it.model.ServiceInformation;
 import ru.hemulen_it.xml.MessageParser;
+import ru.hemulen_it.xml.MessageParserSAX;
 
 public class MyFileVisitor extends SimpleFileVisitor {
     @Override
@@ -28,21 +29,17 @@ public class MyFileVisitor extends SimpleFileVisitor {
             return;
         }
         // Если файл слишком большой (больше 10 Мб), то пишем его название и не парсим
-        if (arcFile.length() > 10000000L) {
-            System.out.println(arcFile.getName() + " - слишком большой для автоматической обработки!");
-            return;
-        }
+ //       if (arcFile.length() > 10000000L) {
+ //           System.out.println(arcFile.getName() + " - слишком большой для автоматической обработки!");
+ //           return;
+ //       }
         File xmlFile = ripper.UnpackToTempFile(arcFile);
         // ...парсим, выбирая элементы со служебной информацией
-        MessageParser parser = new MessageParser();
-        FileInputStream xmlFis = null;
+        MessageParserSAX parser = new MessageParserSAX();
+//        FileInputStream xmlFis = null;
         ServiceInformation si = null;
-        try {
-            xmlFis = new FileInputStream(xmlFile);
-            si = parser.parseFile(xmlFis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //            xmlFis = new FileInputStream(xmlFile);
+        si = parser.parseMessage(xmlFile);
         if (si != null) {
             si.fileName = arcFile.getName();
             si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf(File.separator) + 1);

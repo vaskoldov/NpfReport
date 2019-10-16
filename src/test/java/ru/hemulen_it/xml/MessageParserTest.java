@@ -13,20 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessageParserTest {
     @Test
-    public static void main2(String[] args) {
-        MessageParser messageParser = new MessageParser();
-        byte[] xml = null;
-        try {
-            xml = Files.readAllBytes(Paths.get("C:\\Temp\\Ошибки парсинга\\ПФР_УППО_20190920_22b673c6-dba5-11e9-9571-00155d0a1e12.XML"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ByteArrayOutputStream xmlStream = new ByteArrayOutputStream(xml.length);
-        xmlStream.write(xml, 0, xml.length);
-        System.out.println(messageParser.parseMessage(xmlStream));
+    public static void main(String[] args) {
+        MessageParserSAX messageParser = new MessageParserSAX();
+        File xmlFile = new File("C:\\Temp\\6c2ba106-d707-4b27-8185-9cbaf071d3fb.xml");
+        System.out.println(messageParser.parseMessage(xmlFile));
     }
     @Test
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         MessageParser messageParser = new MessageParser();
         try {
             FileInputStream fis = new FileInputStream(new File("C:\\Temp\\Ошибки парсинга\\ПФР_УППО_20190920_22b673c6-dba5-11e9-9571-00155d0a1e12.XML"));
