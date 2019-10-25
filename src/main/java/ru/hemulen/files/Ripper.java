@@ -1,4 +1,4 @@
-package ru.hemulen_it.files;
+package ru.hemulen.files;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;

@@ -1,4 +1,4 @@
-package ru.hemulen_it.model;
+package ru.hemulen.model;
 
 /**
  * Класс для хранения служебной информации, извлеченной из сообщения
@@ -21,5 +21,13 @@ public class ServiceInformation {
         result += timestamp + ";";
         result += "\n";
         return result;
+    }
+
+    public void clear() {
+        fileName = "";
+        filePath = "";
+        GUID = "";
+        replyTo = "";
+        timestamp = "";
     }
 }

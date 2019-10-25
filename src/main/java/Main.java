@@ -1,5 +1,5 @@
-import ru.hemulen_it.files.MyFileVisitor;
-import ru.hemulen_it.files.ResultWriter;
+import ru.hemulen.files.MyFileVisitor;
+import ru.hemulen.files.ResultWriter;
 
 import java.io.File;
 import java.io.FileInputStream;

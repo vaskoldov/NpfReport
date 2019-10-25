@@ -1,12 +1,10 @@
-package ru.hemulen_it.files;
+package ru.hemulen.files;
 
-import ru.hemulen_it.model.ServiceInformation;
+import ru.hemulen.model.ServiceInformation;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ResultWriter {
     public static String fileName;

@@ -1,8 +1,8 @@
-package ru.hemulen_it.xml;
+package ru.hemulen.xml;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-import ru.hemulen_it.model.ServiceInformation;
+import ru.hemulen.model.ServiceInformation;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

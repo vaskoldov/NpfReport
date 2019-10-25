@@ -1,14 +1,12 @@
-package ru.hemulen_it.xml;
+package ru.hemulen.xml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import ru.hemulen_it.model.ServiceInformation;
+import ru.hemulen.model.ServiceInformation;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -32,7 +30,8 @@ public class MessageParserSAX {
         try {
             parser.parse(xmlFile, handler);
         } catch (SAXException | IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Некорректный формат XML-файла. Файл пропускается. Обработка продолжается.");
         }
         return XMLHandler.si;
     }
@@ -45,7 +44,8 @@ public class MessageParserSAX {
 
         @Override
         public void startDocument() throws SAXException {
-            // Тут будет логика реакции на начало документа
+            // В начале документа чистим si, поскольку он статический
+            si.clear();
         }
 
         @Override

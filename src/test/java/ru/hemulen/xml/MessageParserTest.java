@@ -1,15 +1,8 @@
-package ru.hemulen_it.xml;
+package ru.hemulen.xml;
 
 import org.junit.Test;
-import ru.hemulen_it.model.ServiceInformation;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MessageParserTest {
     @Test
