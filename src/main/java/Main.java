@@ -14,8 +14,6 @@ public class Main {
         Properties props = new Properties();
         try {
             props.load(new FileInputStream(new File("config.ini")));
-            //props.load(new FileInputStream(new File("C:\\Users\\Я\\Documents\\JavaPrj\\NpfReport\\src\\main\\resources\\config.ini")));
-
         } catch (IOException e) {
             System.out.println("Не удалось открыть конфигурационный файл!");
         }

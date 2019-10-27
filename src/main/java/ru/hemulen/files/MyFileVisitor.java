@@ -22,13 +22,19 @@ public class MyFileVisitor extends SimpleFileVisitor {
         File arcFile = new File(file.toString());
         // Если нулевой архив, то пишем его название и не парсим
         if (arcFile.length() == 0L) {
-            System.out.println(arcFile.getName() + " - нулевой длины!");
+            System.out.println(arcFile.getName() + " - нулевой длины.");
             return;
         }
-        File xmlFile = ripper.UnpackToTempFile(arcFile);
+        File xmlFile = null;
+        try {
+            xmlFile = ripper.UnpackToTempFile(arcFile);
+        } catch (IOException e) {
+            System.out.println(arcFile.getName() + " не удалось распаковать.");
+            return;
+        }
         // ...парсим, выбирая элементы со служебной информацией
         MessageParserSAX parser = new MessageParserSAX();
-        ServiceInformation si = parser.parseMessage(xmlFile);
+        ServiceInformation si = parser.parseMessage(xmlFile, arcFile.getName());
         if (si != null) {
             si.fileName = arcFile.getName();
             si.filePath = arcFile.getParent().substring(arcFile.getParent().lastIndexOf(File.separator) + 1);

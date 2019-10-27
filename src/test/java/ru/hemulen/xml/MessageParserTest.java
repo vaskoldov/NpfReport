@@ -9,7 +9,7 @@ class MessageParserTest {
     public static void main(String[] args) {
         MessageParserSAX messageParser = new MessageParserSAX();
         File xmlFile = new File("C:\\Temp\\6c2ba106-d707-4b27-8185-9cbaf071d3fb.xml");
-        System.out.println(messageParser.parseMessage(xmlFile));
+        System.out.println(messageParser.parseMessage(xmlFile, xmlFile.getName()));
     }
     @Test
     public static void main1(String[] args) {

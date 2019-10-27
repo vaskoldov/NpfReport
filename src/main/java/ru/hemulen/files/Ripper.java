@@ -35,7 +35,7 @@ public class Ripper {
         return outputStream;
     }
 
-    public File UnpackToTempFile(File archive) {
+    public File UnpackToTempFile(File archive) throws IOException {
         byte[] buffer = new byte[BUFFER_SIZE];
         FileOutputStream fos = null;
         File outFile = null;
@@ -48,8 +48,6 @@ public class Ripper {
             }
             fos.flush();
             fos.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
         return outFile;
     }

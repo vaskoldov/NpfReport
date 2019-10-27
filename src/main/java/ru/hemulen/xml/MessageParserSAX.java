@@ -25,13 +25,13 @@ public class MessageParserSAX {
         }
     }
 
-    public ServiceInformation parseMessage(File xmlFile) {
+    public ServiceInformation parseMessage(File xmlFile, String orgnFileName) {
         XMLHandler handler = new XMLHandler();
         try {
             parser.parse(xmlFile, handler);
         } catch (SAXException | IOException e) {
             //e.printStackTrace();
-            System.out.println("Некорректный формат XML-файла. Файл пропускается. Обработка продолжается.");
+            System.out.println(orgnFileName + " содержит 'битый' XML.");
         }
         return XMLHandler.si;
     }
