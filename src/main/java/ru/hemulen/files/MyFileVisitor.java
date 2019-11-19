@@ -11,7 +11,7 @@ import ru.hemulen.xml.MessageParserSAX;
 public class MyFileVisitor extends SimpleFileVisitor {
     @Override
     public FileVisitResult visitFile(Object file, BasicFileAttributes attrs) {
-        if (file.toString().endsWith(".gz")) {
+        if (file.toString().toUpperCase().endsWith(".GZ")) {
             visitFileController(file);
         }
         return FileVisitResult.CONTINUE;
